@@ -34,6 +34,10 @@ check_pandas_version()
 #> [1] "The installed Pandas version is 1.0.3"
 ```
 
+## Drawbacks
+
+You cannot switch out the Python interpreter within the same R session. So you can't be using multiple of these sort of packages in the same R session. See [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949).
+
 ## Details
 
 - The conda requirements are defined in `inst/conda-requirements.txt` and installed with the R Package.
