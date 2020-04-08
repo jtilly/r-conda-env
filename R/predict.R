@@ -3,7 +3,9 @@
 #' @return Reticulate object with Python model module
 get_python_model = function() {
   reticulate::use_condaenv(get_package_envname(), required = TRUE)
-  model = reticulate::import_from_path("model", path=system.file(".", package=get_package_name()), convert=TRUE)
+  model = reticulate::import_from_path("model",
+                                       path = system.file(".", package = get_package_name()),
+                                       convert = TRUE)
   return(model)
 }
 
