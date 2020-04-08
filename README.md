@@ -43,7 +43,7 @@ check_pandas_version()
   git_root=0.1=py_0
   numpy=1.18.1=py38h8854b6b_1
   ```
-  Package versions are currently pinned, so to run this on a non-Linux system, the pinnings need to be removed.
+  Package versions are currently pinned. There's an unpinned version for non-Linux systems.
 - Arbitrary Python code can be shipped with the package. Currently, there's only one file `inst/model.py`:
   ```python
   import pandas as pd
