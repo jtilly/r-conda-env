@@ -33,3 +33,26 @@ python_model_predict(df)
 check_pandas_version()
 #> [1] "The installed Pandas version is 1.0.3"
 ```
+
+## Details
+
+- The conda requirements are defined in `inst/conda-requirements.txt` and installed with the R Package.
+  ```
+  python=3.8.2=he5300dc_5_cpython
+  pandas=1.0.3=py38hcb8c335_0
+  git_root=0.1=py_0
+  numpy=1.18.1=py38h8854b6b_1
+  ```
+  Package versions are currently pinned, so to run this on a non-Linux system, the pinnings need to be removed.
+- Arbitrary Python code can be shipped with the package. Currently, there's only one file `inst/model.py`:
+  ```python
+  import pandas as pd
+
+  def predict(df):
+    """Trivial predict function that returns a sequence 0, 1, ..., n-1."""
+    return df.reset_index(drop=True).index.astype(float)
+    
+  def check_pandas_version():
+    return(f"The installed Pandas version is {pd.__version__}")
+  ```
+- The reticulate calls are in `R/predict.R`.
