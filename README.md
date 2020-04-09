@@ -13,6 +13,18 @@ This proof of concept R-package comes with a fully specified conda environment t
 - Make sure `conda` is on your `PATH` before open R/RStudio
 - Install this package via `remotes::install_github("jtilly/r-conda-env")`
 
+```r
+library(rcondaenv)
+create_package_env()
+df <- tibble::tribble(
+  ~x, ~y,  ~z,
+  "a", 2,  3.6,
+  "b", 1,  8.5
+)
+python_model_predict(df)
+check_pandas_version()
+```
+
 ``` r
 library(rcondaenv)
 #> Loading required package: reticulate
@@ -23,7 +35,7 @@ create_package_env()
 #> Creating conda environment now.
 #> Created conda environment with Python executable /opt/local/conda/envs/e7499e940c6b09fd29540f6983c0a615/bin/python
 #> NULL
-df = tibble::tribble(
+df <- tibble::tribble(
   ~x, ~y,  ~z,
   "a", 2,  3.6,
   "b", 1,  8.5
@@ -34,9 +46,6 @@ check_pandas_version()
 #> [1] "The installed Pandas version is 1.0.3"
 ```
 
-## Drawbacks
-
-You cannot switch out the Python interpreter within the same R session. So you can't be using multiple of these sort of packages in the same R session. See [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949).
 
 ## Details
 
@@ -60,3 +69,4 @@ You cannot switch out the Python interpreter within the same R session. So you c
     return(f"The installed Pandas version is {pd.__version__}")
   ```
 - The reticulate calls are in `R/predict.R`.
+- We overcome the problem that you cannot use reticulate to interface with different Python executables in the same R session (see [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949)) by giving each call to Python its own socket (via the parallel package). This comes with [overhead](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html), but since we're only using a single core and are planning on sending fairly large jobs to Python, this might be tolerable.
