@@ -13,35 +13,20 @@ This proof of concept R-package comes with a fully specified conda environment t
 - Make sure `conda` is on your `PATH` before open R/RStudio
 - Install this package via `remotes::install_github("jtilly/r-conda-env")`
 
-```r
-library(rcondaenv)
-create_package_env()
-df <- tibble::tribble(
-  ~x, ~y,  ~z,
-  "a", 2,  3.6,
-  "b", 1,  8.5
-)
-python_model_predict(df)
-check_pandas_version()
-```
-
 ``` r
 library(rcondaenv)
 #> Loading required package: reticulate
 #> Loading required package: digest
-#> To work with this R-package you need to create the conda environment that comes along with it.
-#> To do so run create_package_env()
 create_package_env()
 #> Creating conda environment now.
-#> Created conda environment with Python executable /opt/local/conda/envs/e7499e940c6b09fd29540f6983c0a615/bin/python
-#> NULL
+#> Created conda environment e7499e940c6b09fd29540f6983c0a615
 df <- tibble::tribble(
   ~x, ~y,  ~z,
   "a", 2,  3.6,
   "b", 1,  8.5
 )
 python_model_predict(df)
-#> Float64Index([0.0, 1.0], dtype='float64')
+#> [1] 0 1
 check_pandas_version()
 #> [1] "The installed Pandas version is 1.0.3"
 ```
@@ -69,4 +54,4 @@ check_pandas_version()
     return(f"The installed Pandas version is {pd.__version__}")
   ```
 - The reticulate calls are in `R/predict.R`.
-- We overcome the problem that you cannot use reticulate to interface with different Python executables in the same R session (see [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949)) by giving each call to Python its own socket (via the parallel package). This comes with [overhead](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html), but since we're only using a single core and are planning on sending fairly large jobs to Python, this might be tolerable.
+- We overcome the problem that you cannot use Reticulate to interface with different Python executables within the same R session (see [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949)) by giving each call to Python its own socket (via the parallel package). This comes with [overhead](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html), which may or may not be tolerable depending on your use case.
