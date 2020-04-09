@@ -1,6 +1,6 @@
-[![Travis build status](https://travis-ci.org/jtilly/r-conda-env.svg?branch=master)](https://travis-ci.org/jtilly/r-conda-env)
-
 # r-conda-env
+
+[![Travis build status](https://travis-ci.org/jtilly/r-conda-env.svg?branch=master)](https://travis-ci.org/jtilly/r-conda-env)
 
 R-Package = conda environment wrapped model
 
