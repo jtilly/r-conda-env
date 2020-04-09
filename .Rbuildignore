@@ -1,2 +1,3 @@
 ^rcondaenv\.Rproj$
 ^\.Rproj\.user$
+^\.travis\.yml$
