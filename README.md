@@ -12,7 +12,8 @@ This proof of concept R-package comes with a fully specified conda environment t
 
 ## Usage
 
-- Make sure `conda` is on your `PATH` before open R/RStudio
+- Install miniconda or anaconda (add `conda-forge` to the list of channels)
+- Make sure `conda` is on your `PATH` before opening R or RStudio
 - Install this package via `remotes::install_github("jtilly/r-conda-env")`
 
 ``` r
