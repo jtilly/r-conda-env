@@ -3,3 +3,4 @@
 ^\.travis\.yml$
 ^\_\_pycache\_\_$
 
+^\.pre-commit-config\.yaml$
