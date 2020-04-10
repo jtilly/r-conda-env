@@ -2,7 +2,7 @@
 #'
 #' @return str with package name
 get_package_name <- function() {
-  get("package_name", envir = pkg.env)
+  get("package_name", envir = pkg.env) # nolint
 }
 
 #' Get conda requirements that are shipped with this package
