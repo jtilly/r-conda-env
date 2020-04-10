@@ -12,14 +12,14 @@ This proof of concept R-package comes with a fully specified conda environment t
 
 ## Usage
 
-- Install miniconda or anaconda (add `conda-forge` to the list of channels)
-- Make sure `conda` is on your `PATH` before opening R or RStudio
+- Install miniconda or anaconda
 - Install this package via `remotes::install_github("jtilly/r-conda-env")`
 
 ``` r
 library(rcondaenv)
 #> Loading required package: reticulate
 #> Loading required package: digest
+set_conda_path("/opt/local/conda/bin/conda") # if not already in $PATH
 create_package_env()
 #> Creating conda environment now.
 #> Created conda environment e7499e940c6b09fd29540f6983c0a615

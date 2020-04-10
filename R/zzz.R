@@ -3,10 +3,17 @@ pkg.env <- new.env() # nolint
 
 .onLoad <- function(libname, pkgname) { # nolint
   assign("package_name", pkgname, envir = pkg.env)
+  assign("conda", "auto", envir = pkg.env)
 }
 
 .onAttach <- function(libname, pkgname) { # nolint
-  if (!package_env_exists()) {
+  show_startup_message <- tryCatch(
+    !package_env_exists(),
+    error = function(cond) {
+      TRUE
+    }
+  )
+  if (show_startup_message) {
     packageStartupMessage(
       "To work with this R-package you need to create the conda ",
       "environment that comes along with it. ",

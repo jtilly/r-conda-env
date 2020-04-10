@@ -10,13 +10,12 @@ before_install:
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda config --system --prepend channels conda-forge
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
   - rm miniconda.sh
   - source $HOME/miniconda/bin/activate base
-  - conda install pre-commit
+  - conda install -c conda-forge pre-commit
   - Rscript -e "install.packages('remotes')"
   - Rscript -e "remotes::install_github('lorenzwalthert/precommit')"
   - pre-commit install
