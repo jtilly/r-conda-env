@@ -26,6 +26,7 @@ get_conda_requirements <- function() {
 
 #' Get name of conda environment that belongs to this package
 #' @return vector with name of conda environment
+#' @export
 get_package_envname <- function() {
   return(digest::digest(get_conda_requirements(), algo = "md5"))
 }
