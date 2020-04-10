@@ -19,7 +19,8 @@ This proof of concept R-package comes with a fully specified conda environment t
 library(rcondaenv)
 #> Loading required package: reticulate
 #> Loading required package: digest
-set_conda_path("/opt/local/conda/bin/conda") # if not already in $PATH
+# Set path to conda binary if not already on path
+# set_conda_path("/opt/local/conda/bin/conda")
 create_package_env()
 #> Creating conda environment now.
 #> Created conda environment e7499e940c6b09fd29540f6983c0a615
@@ -41,7 +42,6 @@ check_pandas_version()
   ```
   python=3.8.2=he5300dc_5_cpython
   pandas=1.0.3=py38hcb8c335_0
-  git_root=0.1=py_0
   numpy=1.18.1=py38h8854b6b_1
   ```
   Package versions are currently pinned. There's an unpinned version for non-Linux systems.
