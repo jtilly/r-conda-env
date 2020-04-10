@@ -2,5 +2,4 @@
 
 export(check_pandas_version)
 export(create_package_env)
-export(get_package_envname)
 export(python_model_predict)

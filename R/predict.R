@@ -3,7 +3,7 @@
 #' @return Reticulate object with Python model module
 get_python_model <- function() {
   reticulate::use_condaenv(get_package_envname(), required = TRUE) # nolint
-  package_path <- system.file(".", package = get_package_name())
+  package_path <- system.file(".", package = get_package_name()) # nolint
   model <- reticulate::import_from_path("model",
     path = package_path,
     convert = TRUE
