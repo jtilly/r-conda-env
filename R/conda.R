@@ -1,10 +1,8 @@
 #' Return package name
 #'
-#' There's probably a more elegant way of doing this.
-#'
 #' @return str with package name
 get_package_name <- function() {
-  return("rcondaenv")
+  get("package_name", envir = pkg.env)
 }
 
 #' Get conda requirements that are shipped with this package
@@ -13,12 +11,12 @@ get_conda_requirements <- function() {
   if (Sys.info()["sysname"] == "Linux") {
     file_to_conda_requirements <- system.file(
       "conda-requirements.txt",
-      package = "rcondaenv"
+      package = get_package_name()
     )
   } else {
     file_to_conda_requirements <- system.file(
       "conda-requirements-unpinned.txt",
-      package = "rcondaenv"
+      package = get_package_name()
     )
   }
   conda_requirements <- readLines(file_to_conda_requirements)

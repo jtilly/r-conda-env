@@ -10,5 +10,5 @@ get_package_name()
 str with package name
 }
 \description{
-There's probably a more elegant way of doing this.
+Return package name
 }
