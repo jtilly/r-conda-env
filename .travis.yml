@@ -19,4 +19,4 @@ before_install:
   - Rscript -e "install.packages(c('docopt', 'styler', 'lintr', 'git2r'))"
   - conda install pre-commit
   - pre-commit install
-  - pre-commit run --all
+  # - pre-commit run --all
