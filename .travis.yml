@@ -16,7 +16,8 @@ before_install:
   - conda info -a
   - rm miniconda.sh
   - source $HOME/miniconda/bin/activate base
-  - Rscript -e "install.packages(c('docopt', 'styler', 'lintr', 'git2r'))"
   - conda install pre-commit
-  - pre-commit install
-  # - pre-commit run --all
+  - Rscript -e "install.packages('remotes')"
+  - Rscript -e "remotes::install_github('lorenzwalthert/precommit')"
+  - Rscript -e "precommit::use_precommit()"
+  - pre-commit run --all
