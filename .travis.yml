@@ -19,5 +19,5 @@ before_install:
   - conda install pre-commit
   - Rscript -e "install.packages('remotes')"
   - Rscript -e "remotes::install_github('lorenzwalthert/precommit')"
-  - Rscript -e "precommit::use_precommit()"
+  - pre-commit install
   - pre-commit run --all
