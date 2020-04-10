@@ -15,3 +15,6 @@ before_install:
   # Useful for debugging any issues with conda
   - conda info -a
   - rm miniconda.sh
+  - conda install pre-commit
+  - pre-commit install
+  - pre-commit run --all
