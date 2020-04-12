@@ -15,8 +15,8 @@ Description: This proof of concept R-package comes with a fully specified conda 
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Imports: reticulate, digest
+Imports: reticulate, digest, tibble, bench
 SystemRequirements: conda
 RoxygenNote: 7.1.0
 Suggests: 
-    testthat (>= 2.1.0), tibble, bench, knitr
+    testthat (>= 2.1.0), knitr
