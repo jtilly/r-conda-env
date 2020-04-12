@@ -1,0 +1,81 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%"
+)
+```
+
+# r-conda-env
+
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/jtilly/r-conda-env.svg?branch=master)](https://travis-ci.org/jtilly/r-conda-env)
+<!-- badges: end -->
+
+R-Package = conda environment wrapped model
+
+This package allows you to ship and deploy machine learning models built in Python using an R package.
+
+Say you have a Python model that works in one specific conda environment and you want to make it accessible to R users via reticulate. How do you go about doing that?
+
+This proof of concept R-package comes with a fully specified conda environment that will be created when the R package is installed. All Python code inside this package will then be run in this conda environment. We can ship several models in the same R package as long as they share their conda environment. If two models do not share their conda environment, we ship them in separate R packages.
+
+## Install
+
+You need to have conda installed on your system and reticulate must be able to [find it](https://rstudio.github.io/reticulate/reference/conda-tools.html#finding-conda).
+
+```{r, eval=FALSE}
+# install.packages("remotes")
+remotes::install_github("jtilly/r-conda-env")
+```
+
+## Usage
+
+```{r}
+library(rcondaenv)
+create_package_env()
+df <- tibble::tribble(
+  ~x, ~y, ~z,
+  "a", 2, 3.6,
+  "b", 1, 8.5
+)
+python_model_predict(df)
+check_pandas_version()
+```
+
+
+## Details
+
+- The conda requirements are defined in `inst/conda-requirements.txt` and installed with the R Package.
+  ```
+  python=3.8.2=he5300dc_5_cpython
+  pandas=1.0.3=py38hcb8c335_0
+  numpy=1.18.1=py38h8854b6b_1
+  ```
+  Package versions are currently pinned. There's an unpinned version for non-Linux systems.
+- Arbitrary Python code can be shipped with the package. Currently, there's only one file `inst/model.py`:
+  ```python
+  import pandas as pd
+
+  def predict(df):
+    """Trivial predict function that returns a sequence 0, 1, ..., n-1."""
+    return df.reset_index(drop=True).index.astype(float)
+    
+  def check_pandas_version():
+    return(f"The installed Pandas version is {pd.__version__}")
+  ```
+- The reticulate calls are in `R/predict.R`.
+- We overcome the problem that you cannot use Reticulate to interface with different Python executables within the same R session (see [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949)) by giving each call to Python its own socket (via the parallel package). This comes with [overhead](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html), which may or may not be tolerable depending on your use case.
+
+## Performance
+
+```{r, warning=FALSE}
+results <- bench()
+knitr::kable(results[c("expression", "n", "median", "mem_alloc")])
+```
