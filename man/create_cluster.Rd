@@ -7,7 +7,8 @@
 create_cluster(force = FALSE)
 }
 \arguments{
-\item{force}{logical indicating whether the cluster shall be recreated if it exists}
+\item{force}{logical indicating whether the cluster
+shall be recreated if it exists}
 }
 \description{
 Create cluster that will be used to encapsulate reticulate sessions
