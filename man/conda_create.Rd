@@ -34,7 +34,7 @@ string with path to Python binary
 }
 \description{
 This function is extending
-https://github.com/rstudio/reticulate/blob/d30786a7ca1335003c52c458c1b4081d47ddc9bc/R/conda.R#L109
+https://github.com/rstudio/reticulate/blob/d30786a7ca1335003c52c458c1b4081d47ddc9bc/R/conda.R#L109 # nolint
 which is licensed under Apache License 2.0,
 see https://github.com/rstudio/reticulate/blob/master/LICENSE
 with copyright 2016-2017 RStudio, Inc.
