@@ -25,7 +25,7 @@ set_cluster_type <- function(type) {
 #' Set cluster type for encapsulation.
 #' @return type cluster type used for makeCluster
 #' @export
-get_cluster_type <- function(type) {
+get_cluster_type <- function() {
   get("cluster_type", envir = pkg.env) # nolint
 }
 
