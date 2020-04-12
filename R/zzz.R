@@ -4,6 +4,7 @@ pkg.env <- new.env() # nolint
 .onLoad <- function(libname, pkgname) { # nolint
   assign("package_name", pkgname, envir = pkg.env)
   assign("conda", "auto", envir = pkg.env)
+  assign("cluster_type", "PSOCK", envir = pkg.env)
 }
 
 .onAttach <- function(libname, pkgname) { # nolint

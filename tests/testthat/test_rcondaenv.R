@@ -7,7 +7,7 @@ test_that("readme code works", {
 
 test_that("test that we can switch python versions", {
   # use reticulate and run some python code in the base environment
-  reticulate::use_condaenv("base")
+  reticulate::use_condaenv("base", conda = get_conda_path())
   sys <- reticulate::import("sys")
   version_orig <- sys$version
 
@@ -15,7 +15,7 @@ test_that("test that we can switch python versions", {
   expect_equal(check_pandas_version(), "The installed Pandas version is 1.0.3")
 
   # use reticulate and run some python code in the base environment
-  reticulate::use_condaenv("base")
+  reticulate::use_condaenv("base", conda = get_conda_path())
   sys <- reticulate::import("sys")
   version <- sys$version
 

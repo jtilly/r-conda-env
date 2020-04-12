@@ -23,7 +23,7 @@ get_python_model <- function() {
 #' @return vector with predictions
 #' @export
 python_model_predict <- function(df) {
-  cl <- parallel::makeCluster(1)
+  cl <- parallel::makeCluster(1, type = get_cluster_type()) # nolint
   parallel::clusterExport(cl, c("df"))
   results <- parallel::parLapply(cl, 1, function(i) {
     model <- get_python_model()
@@ -38,8 +38,7 @@ python_model_predict <- function(df) {
 #' @return str with Pandas version
 #' @export
 check_pandas_version <- function() {
-  cl <- parallel::makeCluster(1)
-  parallel::clusterExport(cl, c("df"))
+  cl <- parallel::makeCluster(1, type = get_cluster_type()) # nolint
   results <- parallel::parLapply(cl, 1, function(i) {
     model <- get_python_model()
     version <- model$check_pandas_version()

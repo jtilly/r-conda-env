@@ -15,6 +15,18 @@ get_conda_path <- function() {
   get("conda", envir = pkg.env) # nolint
 }
 
+#' Set cluster type for encapsulation.
+#' @param type cluster type used for makeCluster
+set_cluster_type <- function(type) {
+  assign("cluster_type", type, envir = pkg.env) # nolint
+}
+
+#' Set cluster type for encapsulation.
+#' @return type cluster type used for makeCluster
+get_cluster_type <- function(type) {
+  get("cluster_type", envir = pkg.env) # nolint
+}
+
 #' Return package name
 #'
 #' @return str with package name
