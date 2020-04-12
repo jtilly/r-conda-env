@@ -154,12 +154,12 @@ conda_create <- function(envname = NULL,
 #' @param ... are the function arguments
 #' @export
 encapsulate <- function(func, ...) {
-  if (!exists("cl", envir = pkg.env)) {
+  if (!exists("cl", envir = pkg.env)) { # nolint
     assign("cl", parallel::makeCluster(1, type = get_cluster_type()), pkg.env) # nolint
   }
   args <- list(...)
-  parallel::clusterExport(get("cl", pkg.env), c("args"))
-  results <- parallel::parLapply(get("cl", pkg.env), 1, function(i) {
+  parallel::clusterExport(get("cl", pkg.env), c("args")) # nolint
+  results <- parallel::parLapply(get("cl", pkg.env), 1, function(i) { # nolint
     results <- do.call(func, args)
     rm(args)
     return(results)
