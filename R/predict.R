@@ -4,9 +4,9 @@
 get_python_model <- function() {
   reticulate::use_condaenv(get_package_envname(),
     required = TRUE,
-    conda = get_conda_path() # nolint
+    conda = get_conda_path()
   )
-  package_path <- system.file(".", package = get_package_name()) # nolint
+  package_path <- system.file(".", package = get_package_name())
   model <- reticulate::import_from_path("model",
     path = package_path,
     convert = TRUE
@@ -23,7 +23,7 @@ get_python_model <- function() {
 #' @return vector with predictions
 #' @export
 python_model_predict <- function(df) {
-  encapsulate(func = function(df) { # nolint
+  encapsulate(func = function(df) {
     as.numeric(get_python_model()$predict(df)$values)
   }, df = df)
 }
@@ -33,7 +33,7 @@ python_model_predict <- function(df) {
 #' @return str with Pandas version
 #' @export
 check_pandas_version <- function() {
-  encapsulate(func = function() { # nolint
+  encapsulate(func = function() {
     get_python_model()$check_pandas_version()
   })
 }

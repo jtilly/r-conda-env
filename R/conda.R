@@ -4,7 +4,7 @@
 #'   `reticulate` to automatically find an appropriate `conda` binary.
 #' @export
 set_conda_path <- function(conda) {
-  assign("conda", conda, envir = pkg.env) # nolint
+  assign("conda", conda, envir = pkg.env)
 }
 
 #' Get conda path that is used inside package
@@ -12,28 +12,28 @@ set_conda_path <- function(conda) {
 #'   automatically find a conda binary)
 #' @export
 get_conda_path <- function() {
-  get("conda", envir = pkg.env) # nolint
+  get("conda", envir = pkg.env)
 }
 
 #' Set cluster type for encapsulation.
 #' @param type cluster type used for makeCluster
 #' @export
 set_cluster_type <- function(type) {
-  assign("cluster_type", type, envir = pkg.env) # nolint
+  assign("cluster_type", type, envir = pkg.env)
 }
 
 #' Set cluster type for encapsulation.
 #' @return type cluster type used for makeCluster
 #' @export
 get_cluster_type <- function() {
-  get("cluster_type", envir = pkg.env) # nolint
+  get("cluster_type", envir = pkg.env)
 }
 
 #' Return package name
 #'
 #' @return str with package name
 get_package_name <- function() {
-  get("package_name", envir = pkg.env) # nolint
+  get("package_name", envir = pkg.env)
 }
 
 #' Set encapsulate
@@ -42,7 +42,7 @@ get_package_name <- function() {
 #'   reticulate calls
 #' @export
 set_encapsulate <- function(encapsulate) {
-  assign("encapsulate", encapsulate, envir = pkg.env) # nolint
+  assign("encapsulate", encapsulate, envir = pkg.env)
 }
 
 #' Get conda requirements that are shipped with this package
@@ -167,16 +167,17 @@ create_cluster <- function(force = FALSE) {
     stop_cluster()
   }
 
-  if (!exists("cl", envir = pkg.env)) { # nolint
-    assign("cl", parallel::makeCluster(1, type = get_cluster_type()), pkg.env) # nolint
+  if (!exists("cl", envir = pkg.env)) {
+    assign("cl", parallel::makeCluster(1, type = get_cluster_type()), pkg.env)
   }
 }
 
 #' Close cluster that was be used to encapsulate reticulate sessions
 #' @export
 stop_cluster <- function() {
-  if (exists("cl", envir = pkg.env)) { # nolint
-    parallel::stopCluster(get("cl", envir = pkg.env)) # nolint
+  if (exists("cl", envir = pkg.env)) {
+    parallel::stopCluster(get("cl", envir = pkg.env))
+    rm(list = c("cl"), envir = pkg.env)
   }
 }
 
@@ -185,14 +186,14 @@ stop_cluster <- function() {
 #' @param ... are the function arguments
 #' @export
 encapsulate <- function(func, ...) {
-  if (!get("encapsulate", pkg.env)) { # nolint
+  if (!get("encapsulate", pkg.env)) {
     return(func(...))
   }
 
   create_cluster()
   args <- list(...)
-  parallel::clusterExport(get("cl", pkg.env), c("args")) # nolint
-  results <- parallel::parLapply(get("cl", pkg.env), 1, function(i) { # nolint
+  parallel::clusterExport(get("cl", pkg.env), c("args"))
+  results <- parallel::parLapply(get("cl", pkg.env), 1, function(i) {
     results <- do.call(func, args)
     rm(args)
     return(results)

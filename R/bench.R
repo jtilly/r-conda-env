@@ -33,8 +33,7 @@ bench <- function(n = 1e6,
     lapply(
       seq_len(k_char),
       function(x) {
-        sample(
-          c(letters, NA_character_),
+        sample(c(letters, NA_character_),
           size = n,
           replace = TRUE
         )
@@ -45,8 +44,9 @@ bench <- function(n = 1e6,
       seq_len(k_date),
       function(x) {
         sample(as.Date(
-          # no in NAs in dates
-          c("2000-01-01", "2010-01-01", "2020-01-01")
+          c(
+            "2000-01-01", "2010-01-01", "2020-01-01"
+          )
         ), size = n, replace = TRUE)
       }
     )
@@ -66,17 +66,19 @@ bench <- function(n = 1e6,
   }
 
   # create cluster only once
-  create_cluster(force = TRUE)
+  create_cluster()
 
   # run comparison
   results <- bench::press(
     n = 10^c(0, seq_len(log10(n))),
-    bench::mark(
-      encapsulate = encapsulate(head(df, n)),
-      do_not_encapsulate = do_not_encapsulate(head(df, n))
-    )
+    { # nolint
+      df <- head(df, n)
+      bench::mark(
+        encapsulate = encapsulate(df),
+        do_not_encapsulate = do_not_encapsulate(df)
+      )
+    }
   )
 
-  stop_cluster()
   return(results)
 }
