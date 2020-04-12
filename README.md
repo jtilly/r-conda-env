@@ -45,9 +45,9 @@ create_package_env()
 #> Environment 2f0409c2f60c564607d28c44c8edc52c already exists. Removing it first...
 #> Created conda environment 2f0409c2f60c564607d28c44c8edc52c
 df <- tibble::tribble(
-  ~x, ~y,  ~z,
-  "a", 2,  3.6,
-  "b", 1,  8.5
+  ~x, ~y, ~z,
+  "a", 2, 3.6,
+  "b", 1, 8.5
 )
 python_model_predict(df)
 #> [1] 0 1
@@ -95,7 +95,7 @@ check_pandas_version()
 ## Performance
 
 ``` r
-results = bench()
+results <- bench()
 #> Running with:
 #>         n
 #> 1       1
@@ -110,17 +110,17 @@ knitr::kable(results[c("expression", "n", "median", "mem_alloc")])
 
 | expression               |     n |   median | mem\_alloc |
 | :----------------------- | ----: | -------: | ---------: |
-| encapsulate(df)          | 1e+00 | 507.88ms |   181.96KB |
-| do\_not\_encapsulate(df) | 1e+00 | 475.17ms |     2.25MB |
-| encapsulate(df)          | 1e+01 |  525.6ms |   176.59KB |
-| do\_not\_encapsulate(df) | 1e+01 | 492.75ms |   198.73KB |
-| encapsulate(df)          | 1e+02 | 503.01ms |   178.25KB |
-| do\_not\_encapsulate(df) | 1e+02 | 478.05ms |   208.67KB |
-| encapsulate(df)          | 1e+03 | 560.41ms |   192.31KB |
-| do\_not\_encapsulate(df) | 1e+03 |  507.8ms |   293.05KB |
-| encapsulate(df)          | 1e+04 | 630.94ms |   332.94KB |
-| do\_not\_encapsulate(df) | 1e+04 | 561.94ms |     1.11MB |
-| encapsulate(df)          | 1e+05 |    2.07s |      1.7MB |
-| do\_not\_encapsulate(df) | 1e+05 |    1.24s |     9.36MB |
-| encapsulate(df)          | 1e+06 |   15.19s |    15.43MB |
-| do\_not\_encapsulate(df) | 1e+06 |   11.16s |    91.75MB |
+| encapsulate(df)          | 1e+00 | 609.02ms |   181.96KB |
+| do\_not\_encapsulate(df) | 1e+00 | 544.16ms |     2.25MB |
+| encapsulate(df)          | 1e+01 | 688.53ms |   176.59KB |
+| do\_not\_encapsulate(df) | 1e+01 | 594.47ms |   198.73KB |
+| encapsulate(df)          | 1e+02 | 586.19ms |   178.25KB |
+| do\_not\_encapsulate(df) | 1e+02 |  550.9ms |   208.67KB |
+| encapsulate(df)          | 1e+03 | 653.49ms |   192.31KB |
+| do\_not\_encapsulate(df) | 1e+03 | 572.51ms |   293.05KB |
+| encapsulate(df)          | 1e+04 | 749.23ms |   332.94KB |
+| do\_not\_encapsulate(df) | 1e+04 | 632.67ms |     1.11MB |
+| encapsulate(df)          | 1e+05 |    2.33s |      1.7MB |
+| do\_not\_encapsulate(df) | 1e+05 |    1.34s |     9.36MB |
+| encapsulate(df)          | 1e+06 |   15.97s |    15.43MB |
+| do\_not\_encapsulate(df) | 1e+06 |    10.8s |    91.75MB |
