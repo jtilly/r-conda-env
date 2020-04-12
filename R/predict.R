@@ -24,7 +24,7 @@ get_python_model <- function() {
 #' @export
 python_model_predict <- function(df) {
   encapsulate(func = function(df) { # nolint
-    get_python_model()$predict(df)$values
+    as.numeric(get_python_model()$predict(df)$values)
   }, df = df)
 }
 

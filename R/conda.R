@@ -36,6 +36,15 @@ get_package_name <- function() {
   get("package_name", envir = pkg.env) # nolint
 }
 
+#' Set encapsulate
+#'
+#' @param encapsulate Logical indicating whether to encapsulate
+#'   reticulate calls
+#' @export
+set_encapsulate <- function(encapsulate) {
+  assign("encapsulate", encapsulate, envir = pkg.env) # nolint
+}
+
 #' Get conda requirements that are shipped with this package
 #' @return vector with requirements
 get_conda_requirements <- function() {
@@ -149,14 +158,38 @@ conda_create <- function(envname = NULL,
   reticulate::conda_python(envname = envname, conda = conda)
 }
 
+#' Create cluster that will be used to encapsulate reticulate sessions
+#' @param force logical indicating whether the cluster
+#'   shall be recreated if it exists
+#' @export
+create_cluster <- function(force = FALSE) {
+  if (force) {
+    stop_cluster()
+  }
+
+  if (!exists("cl", envir = pkg.env)) { # nolint
+    assign("cl", parallel::makeCluster(1, type = get_cluster_type()), pkg.env) # nolint
+  }
+}
+
+#' Close cluster that was be used to encapsulate reticulate sessions
+#' @export
+stop_cluster <- function() {
+  if (exists("cl", envir = pkg.env)) { # nolint
+    parallel::stopCluster(get("cl", envir = pkg.env)) # nolint
+  }
+}
+
 #' Run function via makeCluster to allow several python bindings in reticulate
 #' @param func is the function that will be run
 #' @param ... are the function arguments
 #' @export
 encapsulate <- function(func, ...) {
-  if (!exists("cl", envir = pkg.env)) { # nolint
-    assign("cl", parallel::makeCluster(1, type = get_cluster_type()), pkg.env) # nolint
+  if (!get("encapsulate", pkg.env)) { # nolint
+    return(func(...))
   }
+
+  create_cluster()
   args <- list(...)
   parallel::clusterExport(get("cl", pkg.env), c("args")) # nolint
   results <- parallel::parLapply(get("cl", pkg.env), 1, function(i) { # nolint
