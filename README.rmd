@@ -71,13 +71,14 @@ check_pandas_version()
     return(f"The installed Pandas version is {pd.__version__}")
   ```
 - The reticulate calls are in `R/predict.R`.
-- We overcome the problem that you cannot use reticulate to interface with different Python executables within the same R session (see [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949)) by giving each call to Python its own socket (via the parallel package). This comes with [overhead](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html), which may or may not be tolerable depending on your use case.
+- We overcome the problem that you cannot use reticulate to interface with different Python executables within the same R session (see [this comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949)) by running the reticulate call on a different worker (via the `parallel` package - both `PSOCK` and `FORK` work here). This comes with overhead, both for setting up the [cluster](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html) and for serializing the data and communicating with the worker, which may or may not be tolerable depending on your use case.
 
 ## Performance
 
-A benchmark is provided for a data set with 10 numerical columns, 10 string columns, and 10 date columns. `encapsulate` uses the little hack that allows us to use reticulate with different Python executables in the same R session (which means all data gets serialized and send over to another worker). `do_not_encapsulate` goes straight from the user's R session to reticulae.
+A benchmark is provided for a data set with 10 numerical columns, 10 string columns, and 10 date columns. `encapsulate` uses the little hack that allows us to use reticulate with different Python executables in the same R session. `do_not_encapsulate` goes straight from the user's R session to reticulate.
 
 ```{r, warning=FALSE}
-results <- bench(n = 1e7)
-knitr::kable(results[c("expression", "n", "median", "mem_alloc")])
+set_cluster_type("FORK")
+results <- bench(n = 1e6)
+knitr::kable(results[c("expression", "n", "median")])
 ```

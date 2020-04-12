@@ -66,7 +66,7 @@ bench <- function(n = 1e6,
   }
 
   # create cluster only once
-  create_cluster()
+  create_cluster(force = TRUE)
 
   # run comparison
   results <- bench::press(
@@ -79,6 +79,8 @@ bench <- function(n = 1e6,
       )
     }
   )
+
+  stop_cluster()
 
   return(results)
 }

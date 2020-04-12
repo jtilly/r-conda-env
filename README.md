@@ -83,19 +83,28 @@ check_pandas_version()
 
   - The reticulate calls are in `R/predict.R`.
 
-  - We overcome the problem that you cannot use Reticulate to interface
+  - We overcome the problem that you cannot use reticulate to interface
     with different Python executables within the same R session (see
     [this
     comment](https://github.com/rstudio/reticulate/issues/27#issuecomment-512256949))
-    by giving each call to Python its own socket (via the parallel
-    package). This comes with
-    [overhead](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html),
+    by running the reticulate call on a different worker (via the
+    `parallel` package - both `PSOCK` and `FORK` work here). This comes
+    with overhead, both for setting up the
+    [cluster](https://developer.r-project.org/Blog/public/2020/03/17/socket-connections-update/index.html)
+    and for serializing the data and communicating with the worker,
     which may or may not be tolerable depending on your use case.
 
 ## Performance
 
+A benchmark is provided for a data set with 10 numerical columns, 10
+string columns, and 10 date columns. `encapsulate` uses the little hack
+that allows us to use reticulate with different Python executables in
+the same R session. `do_not_encapsulate` goes straight from the user’s R
+session to reticulate.
+
 ``` r
-results <- bench()
+set_cluster_type("FORK")
+results <- bench(n = 1e6)
 #> Running with:
 #>         n
 #> 1       1
@@ -105,22 +114,22 @@ results <- bench()
 #> 5   10000
 #> 6  100000
 #> 7 1000000
-knitr::kable(results[c("expression", "n", "median", "mem_alloc")])
+knitr::kable(results[c("expression", "n", "median")])
 ```
 
-| expression               |     n |   median | mem\_alloc |
-| :----------------------- | ----: | -------: | ---------: |
-| encapsulate(df)          | 1e+00 | 609.02ms |   181.96KB |
-| do\_not\_encapsulate(df) | 1e+00 | 544.16ms |     2.25MB |
-| encapsulate(df)          | 1e+01 | 688.53ms |   176.59KB |
-| do\_not\_encapsulate(df) | 1e+01 | 594.47ms |   198.73KB |
-| encapsulate(df)          | 1e+02 | 586.19ms |   178.25KB |
-| do\_not\_encapsulate(df) | 1e+02 |  550.9ms |   208.67KB |
-| encapsulate(df)          | 1e+03 | 653.49ms |   192.31KB |
-| do\_not\_encapsulate(df) | 1e+03 | 572.51ms |   293.05KB |
-| encapsulate(df)          | 1e+04 | 749.23ms |   332.94KB |
-| do\_not\_encapsulate(df) | 1e+04 | 632.67ms |     1.11MB |
-| encapsulate(df)          | 1e+05 |    2.33s |      1.7MB |
-| do\_not\_encapsulate(df) | 1e+05 |    1.34s |     9.36MB |
-| encapsulate(df)          | 1e+06 |   15.97s |    15.43MB |
-| do\_not\_encapsulate(df) | 1e+06 |    10.8s |    91.75MB |
+| expression               |     n |   median |
+| :----------------------- | ----: | -------: |
+| encapsulate(df)          | 1e+00 | 542.29ms |
+| do\_not\_encapsulate(df) | 1e+00 | 459.25ms |
+| encapsulate(df)          | 1e+01 | 510.14ms |
+| do\_not\_encapsulate(df) | 1e+01 | 465.09ms |
+| encapsulate(df)          | 1e+02 | 500.33ms |
+| do\_not\_encapsulate(df) | 1e+02 | 464.31ms |
+| encapsulate(df)          | 1e+03 | 566.11ms |
+| do\_not\_encapsulate(df) | 1e+03 | 470.98ms |
+| encapsulate(df)          | 1e+04 | 614.53ms |
+| do\_not\_encapsulate(df) | 1e+04 | 532.51ms |
+| encapsulate(df)          | 1e+05 |    1.91s |
+| do\_not\_encapsulate(df) | 1e+05 |    1.17s |
+| encapsulate(df)          | 1e+06 |   12.01s |
+| do\_not\_encapsulate(df) | 1e+06 |    7.52s |
