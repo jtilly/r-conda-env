@@ -5,6 +5,8 @@ cache: packages
 
 r:
   - 3.6
+  - 3.5
+  - 3.4
 
 before_install:
   - sudo apt-get update
@@ -22,5 +24,4 @@ before_install:
   - conda install -c conda-forge pre-commit
   - Rscript -e "install.packages('remotes')"
   - Rscript -e "remotes::install_github('lorenzwalthert/precommit')"
-  - pre-commit install
-  - pre-commit run --all
+  - if [[ ${TRAVIS_R_VERSION_STRING} == 3.6 ]]; then pre-commit install && pre-commit run --all; fi
