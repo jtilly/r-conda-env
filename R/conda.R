@@ -17,12 +17,14 @@ get_conda_path <- function() {
 
 #' Set cluster type for encapsulation.
 #' @param type cluster type used for makeCluster
+#' @export
 set_cluster_type <- function(type) {
   assign("cluster_type", type, envir = pkg.env) # nolint
 }
 
 #' Set cluster type for encapsulation.
 #' @return type cluster type used for makeCluster
+#' @export
 get_cluster_type <- function(type) {
   get("cluster_type", envir = pkg.env) # nolint
 }
@@ -145,4 +147,22 @@ conda_create <- function(envname = NULL,
 
   # return the path to the python binary
   reticulate::conda_python(envname = envname, conda = conda)
+}
+
+#' Run function via makeCluster to allow several python bindings in reticulate
+#' @param func is the function that will be run
+#' @param ... are the function arguments
+#' @export
+encapsulate <- function(func, ...) {
+  if (!exists("cl", envir = pkg.env)) {
+    assign("cl", parallel::makeCluster(1, type = get_cluster_type()), pkg.env) # nolint
+  }
+  args <- list(...)
+  parallel::clusterExport(get("cl", pkg.env), c("args"))
+  results <- parallel::parLapply(get("cl", pkg.env), 1, function(i) {
+    results <- do.call(func, args)
+    rm(args)
+    return(results)
+  })
+  return(unlist(results))
 }
