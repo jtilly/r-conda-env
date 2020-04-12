@@ -24,4 +24,5 @@ before_install:
   - conda install -c conda-forge pre-commit
   - Rscript -e "install.packages('remotes')"
   - Rscript -e "remotes::install_github('lorenzwalthert/precommit')"
+  - sed -i -n '/lintr/!p' .pre-commit-config.yaml
   - if [[ ${TRAVIS_R_VERSION_STRING} == 3.6 ]]; then pre-commit install && pre-commit run --all; fi
