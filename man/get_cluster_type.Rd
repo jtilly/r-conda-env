@@ -4,7 +4,7 @@
 \alias{get_cluster_type}
 \title{Set cluster type for encapsulation.}
 \usage{
-get_cluster_type(type)
+get_cluster_type()
 }
 \value{
 type cluster type used for makeCluster
